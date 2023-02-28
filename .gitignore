@@ -13,3 +13,8 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# generated code & bins we don't care about
+bin/
+cmd/
+swagger.generated.yml
