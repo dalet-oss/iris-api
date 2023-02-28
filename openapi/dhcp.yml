@@ -1,0 +1,336 @@
+definitions:
+  DHCP:
+    type: object
+    properties:
+      status:
+        type: string
+        description: The status of the DHCPv4 service
+        enum: ["OK", "KO"]
+      version:
+        type: string
+        description: The version of the DHCPv4 service
+  SubnetPoolRange:
+    type: object
+    properties:
+      first:
+        type: string
+        description: The subnet's first IP address for DHCP dynamic leases.
+      last:
+        type: string
+        description: The subnet's last IP address for DHCP dynamic leases.
+    example:
+      first: '192.168.0.51'
+      last: '192.168.0.99'
+  Subnet:
+    type: object
+    required: [subnet, pools]
+    properties:
+      id:
+        type: string
+        description: The subnet ID (auto-generated).
+      subnet:
+        type: string
+        description: The subnet in CIDR format (e.g. '192.168.0.0/24').
+      pools:
+        type: array
+        items:
+          $ref: '#/definitions/SubnetPoolRange'
+  Reservation:
+    type: object
+    properties:
+      mac:
+        type: string
+        description: The host MAC address.
+      ip:
+        type: string
+        description: The host IP address.
+      hostname:
+        type: string
+        description: The host name
+    example:
+      mac: '1a:1b:1c:1d:1e:1f'
+      ip: '192.168.0.10'
+      hostname: 'my-awesome-server'
+
+paths:
+  /dhcp:
+    get:
+      tags:
+        - dhcp
+      operationId: GetDHCPStatus
+      description: Return the status of the DHCPv4 service.
+      responses:
+        200:
+          description: Return the status and version of the DHCPv4 service.
+          schema:
+            $ref: '#/definitions/DHCP'
+
+  /dhcp/enable:
+    post:
+      tags:
+        - dhcp
+      operationId: EnableDHCP
+      description: Enable the DHCPv4 service.
+      responses:
+        201:
+          description: The DHCPv4 service has been enabled.
+        409:
+          description: The DHCPv4 service was already enable.
+        500:
+          description: Unable to enable the DHCPv4 service.
+
+  /dhcp/disable:
+    post:
+      tags:
+        - dhcp
+      operationId: DisableDHCP
+      description: Disable the DHCPv4 service.
+      responses:
+        201:
+          description: The DHCPv4 service has been disabled.
+        409:
+          description: The DHCPv4 service was already disable.
+        500:
+          description: Unable to disable the DHCPv4 service.
+
+  /dhcp/reload:
+    post:
+      tags:
+        - dhcp
+      operationId: ReloadDHCP
+      description: Reload the DHCPv4 service configuration.
+      responses:
+        201:
+          description: The DHCPv4 service configuration has been reloaded.
+        500:
+          description: Unable to reload the DHCPv4 service configuration.
+
+  /dhcp/subnet:
+    get:
+      tags:
+        - dhcp
+      operationId: GetAllDHCPSubnets
+      description: Returns the IDs of DHCPv4 registered subnets.
+      responses:
+        200:
+          description: Returns the an array of DHCPv4 registered subnets.
+          schema:
+            type: array
+            items:
+              type: string
+    post:
+      tags:
+        - dhcp
+      operationId: CreateDHCPSubnet
+      description: Creates a new DHCPv4 subnet.
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Subnet'
+      responses:
+        201:
+          description: Returns the newly created subnet object.
+          schema:
+            $ref: '#/definitions/Subnet'
+        400:
+          description: Bad parameters were provided.
+        409:
+          description: Subnet already exists.
+        500:
+          description: Unable to create Subnet's resevration.
+
+  /dhcp/subnet/{subnetId}:
+    get:
+      tags:
+        - dhcp
+      operationId: GetDHCPSubnet
+      description: Returns the requested DHCP Subnet object.
+      parameters:
+        - name: subnetId
+          in: path
+          type: string
+          required: true
+          description: The ID of the DHCP subnet to query.
+      responses:
+        200:
+          description: Returns the DHCP Subnet object.
+          schema:
+            $ref: '#/definitions/Subnet'
+        404:
+          description: Invalid subnet ID was provided.
+    put:
+      tags:
+        - dhcp
+      operationId: UpdateDHCPSubnet
+      description: Updates a DHCPv4 subnet configuration.
+      parameters:
+        - name: subnetId
+          in: path
+          type: string
+          required: true
+          description: The ID of the subnet to update.
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/Subnet'
+      responses:
+        200:
+          description: Returns the updated subnet object.
+          schema:
+            $ref: '#/definitions/Subnet'
+        400:
+          description: Bad parameters were provided.
+        404:
+          description: Invalid subnet ID was provided.
+        500:
+          description: Unable to update subnet.
+    delete:
+      tags:
+        - dhcp
+      operationId: DeleteDHCPSubnet
+      description: Deletes an existing subnet.
+      parameters:
+        - name: subnetId
+          in: path
+          type: string
+          required: true
+          description: The ID of the subnet to delete.
+      responses:
+        200:
+          description: The subnet has been successfully removed.
+        404:
+          description: Invalid subnet ID was provided.
+        409:
+          description: The subnet is not empty or still has reservations.
+        500:
+          description: Unable to remove the requested subnet.
+
+  /dhcp/subnet/{subnetId}/reservation:
+    get:
+      tags:
+        - dhcp
+      operationId: GetAllDHCPSubnetReservations
+      description: Returns the list of MAC hardware addresses of subnet's reservations.
+      parameters:
+        - name: subnetId
+          in: path
+          type: string
+          required: true
+          description: The ID of the DHCP subnet to get reservations from.
+      responses:
+        200:
+          description: Returns the an array of subnet's reserved MAC addresses.
+          schema:
+            type: array
+            items:
+              type: string
+        404:
+          description: Invalid subnet ID was provided.
+    post:
+      tags:
+        - dhcp
+      operationId: CreateDHCPSubnetReservation
+      description: Creates a new DHCPv4 subnet's reservation.
+      parameters:
+        - name: subnetId
+          in: path
+          type: string
+          required: true
+          description: The ID of the DHCP subnet to create reservations on.
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Reservation'
+      responses:
+        201:
+          description: Returns the newly created subnet's reservation object.
+          schema:
+            $ref: '#/definitions/Reservation'
+        400:
+          description: Bad parameters were provided.
+        409:
+          description: Subnet's reservation already exists.
+        500:
+          description: Unable to create Subnet's resevration.
+
+  /dhcp/subnet/{subnetId}/reservation/{macID}:
+    get:
+      tags:
+        - dhcp
+      operationId: GetDHCPSubnetReservation
+      description: Returns the subnet reservation object.
+      parameters:
+        - name: subnetId
+          in: path
+          type: string
+          required: true
+          description: The ID of the DHCP subnet to query.
+        - name: macID
+          in: path
+          type: string
+          required: true
+          description: The hardware MAC address of the reservation to query.
+      responses:
+        200:
+          description: Returns the DHCP Reservation object.
+          schema:
+            $ref: '#/definitions/Reservation'
+        404:
+          description: Invalid subnet ID or reservation MAC address was provided.
+    put:
+      tags:
+        - dhcp
+      operationId: UpdateDHCPSubnetReservation
+      description: Updates a DHCPv4 subnet reservation.
+      parameters:
+        - name: subnetId
+          in: path
+          type: string
+          required: true
+          description: The ID of the subnet's reservation to update.
+        - name: macID
+          in: path
+          type: string
+          required: true
+          description: The hardware MAC address of the reservation to update.
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/Reservation'
+      responses:
+        200:
+          description: Returns the updated Reservation object.
+          schema:
+            $ref: '#/definitions/Reservation'
+        400:
+          description: Bad parameters were provided.
+        404:
+          description: Invalid subnet ID or reservation MAC address was provided.
+        500:
+          description: Unable to update subnet's reservation.
+    delete:
+      tags:
+        - dhcp
+      operationId: DeleteDHCPSubnetReservation
+      description: Deletes an existing subnet's reservation.
+      parameters:
+        - name: subnetId
+          in: path
+          type: string
+          required: true
+          description: The ID of the subnet's reservation to delete.
+        - name: macID
+          in: path
+          type: string
+          required: true
+          description: The hardware MAC address of the reservation to delete.
+      responses:
+        200:
+          description: The reservation has been successfully removed.
+        404:
+          description: Invalid subnet ID or reservation MAC address was provided.
+        500:
+          description: Unable to remove the requested reservation.

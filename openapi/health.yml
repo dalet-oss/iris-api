@@ -1,0 +1,13 @@
+paths:
+  /healthz:
+    get:
+      operationId: Healthz
+      produces:
+      - text/plain
+      responses:
+        '200':
+          description: OK message.
+          schema:
+            type: string
+            enum:
+            - OK

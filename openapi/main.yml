@@ -1,0 +1,25 @@
+consumes:
+- application/json
+info:
+  description: Iris API Server
+  title: Iris
+  version: 0.0.1
+produces:
+- application/json
+schemes:
+- http
+basePath: "/api/v1"
+swagger: "2.0"
+
+securityDefinitions:
+  key:
+    type: apiKey
+    in: header
+    name: x-token
+
+security:
+  - key: []
+
+definitions:
+  principal:
+    type: string
