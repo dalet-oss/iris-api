@@ -14,13 +14,13 @@ import (
 	"github.com/dalet-oss/iris-api/server/api/dhcp"
 )
 
-//go:generate swagger generate server --target ../../iris-api --name Iris --spec ../swagger.generated.yml --api-package api --server-package server --principal interface{} --exclude-main
+//go:generate swagger generate server --target ../../iris-api --name Irisd --spec ../swagger.generated.yml --api-package api --server-package server --principal interface{} --exclude-main
 
-func configureFlags(api *swaggerapi.IrisAPI) {
+func configureFlags(api *swaggerapi.IrisdAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
 }
 
-func configureAPI(api *swaggerapi.IrisAPI) http.Handler {
+func configureAPI(api *swaggerapi.IrisdAPI) http.Handler {
 	// configure the api here
 	api.ServeError = errors.ServeError
 

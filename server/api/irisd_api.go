@@ -22,9 +22,9 @@ import (
 	"github.com/dalet-oss/iris-api/server/api/dhcp"
 )
 
-// NewIrisAPI creates a new Iris instance
-func NewIrisAPI(spec *loads.Document) *IrisAPI {
-	return &IrisAPI{
+// NewIrisdAPI creates a new Irisd instance
+func NewIrisdAPI(spec *loads.Document) *IrisdAPI {
+	return &IrisdAPI{
 		handlers:            make(map[string]map[string]http.Handler),
 		formats:             strfmt.Default,
 		defaultConsumes:     "application/json",
@@ -100,8 +100,8 @@ func NewIrisAPI(spec *loads.Document) *IrisAPI {
 	}
 }
 
-/*IrisAPI Iris API Server */
-type IrisAPI struct {
+/*IrisdAPI Iris API Server */
+type IrisdAPI struct {
 	spec            *loads.Document
 	context         *middleware.Context
 	handlers        map[string]map[string]http.Handler
@@ -194,52 +194,52 @@ type IrisAPI struct {
 }
 
 // UseRedoc for documentation at /docs
-func (o *IrisAPI) UseRedoc() {
+func (o *IrisdAPI) UseRedoc() {
 	o.useSwaggerUI = false
 }
 
 // UseSwaggerUI for documentation at /docs
-func (o *IrisAPI) UseSwaggerUI() {
+func (o *IrisdAPI) UseSwaggerUI() {
 	o.useSwaggerUI = true
 }
 
 // SetDefaultProduces sets the default produces media type
-func (o *IrisAPI) SetDefaultProduces(mediaType string) {
+func (o *IrisdAPI) SetDefaultProduces(mediaType string) {
 	o.defaultProduces = mediaType
 }
 
 // SetDefaultConsumes returns the default consumes media type
-func (o *IrisAPI) SetDefaultConsumes(mediaType string) {
+func (o *IrisdAPI) SetDefaultConsumes(mediaType string) {
 	o.defaultConsumes = mediaType
 }
 
 // SetSpec sets a spec that will be served for the clients.
-func (o *IrisAPI) SetSpec(spec *loads.Document) {
+func (o *IrisdAPI) SetSpec(spec *loads.Document) {
 	o.spec = spec
 }
 
 // DefaultProduces returns the default produces media type
-func (o *IrisAPI) DefaultProduces() string {
+func (o *IrisdAPI) DefaultProduces() string {
 	return o.defaultProduces
 }
 
 // DefaultConsumes returns the default consumes media type
-func (o *IrisAPI) DefaultConsumes() string {
+func (o *IrisdAPI) DefaultConsumes() string {
 	return o.defaultConsumes
 }
 
 // Formats returns the registered string formats
-func (o *IrisAPI) Formats() strfmt.Registry {
+func (o *IrisdAPI) Formats() strfmt.Registry {
 	return o.formats
 }
 
 // RegisterFormat registers a custom format validator
-func (o *IrisAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
+func (o *IrisdAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
 	o.formats.Add(name, format, validator)
 }
 
-// Validate validates the registrations in the IrisAPI
-func (o *IrisAPI) Validate() error {
+// Validate validates the registrations in the IrisdAPI
+func (o *IrisdAPI) Validate() error {
 	var unregistered []string
 
 	if o.JSONConsumer == nil {
@@ -311,12 +311,12 @@ func (o *IrisAPI) Validate() error {
 }
 
 // ServeErrorFor gets a error handler for a given operation id
-func (o *IrisAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
+func (o *IrisdAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
 	return o.ServeError
 }
 
 // AuthenticatorsFor gets the authenticators for the specified security schemes
-func (o *IrisAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
+func (o *IrisdAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
 	result := make(map[string]runtime.Authenticator)
 	for name := range schemes {
 		switch name {
@@ -330,13 +330,13 @@ func (o *IrisAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[
 }
 
 // Authorizer returns the registered authorizer
-func (o *IrisAPI) Authorizer() runtime.Authorizer {
+func (o *IrisdAPI) Authorizer() runtime.Authorizer {
 	return o.APIAuthorizer
 }
 
 // ConsumersFor gets the consumers for the specified media types.
 // MIME type parameters are ignored here.
-func (o *IrisAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
+func (o *IrisdAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
 	result := make(map[string]runtime.Consumer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
@@ -353,7 +353,7 @@ func (o *IrisAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer 
 
 // ProducersFor gets the producers for the specified media types.
 // MIME type parameters are ignored here.
-func (o *IrisAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
+func (o *IrisdAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
 	result := make(map[string]runtime.Producer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
@@ -371,7 +371,7 @@ func (o *IrisAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer 
 }
 
 // HandlerFor gets a http.Handler for the provided operation method and path
-func (o *IrisAPI) HandlerFor(method, path string) (http.Handler, bool) {
+func (o *IrisdAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	if o.handlers == nil {
 		return nil, false
 	}
@@ -386,8 +386,8 @@ func (o *IrisAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	return h, ok
 }
 
-// Context returns the middleware context for the iris API
-func (o *IrisAPI) Context() *middleware.Context {
+// Context returns the middleware context for the irisd API
+func (o *IrisdAPI) Context() *middleware.Context {
 	if o.context == nil {
 		o.context = middleware.NewRoutableContext(o.spec, o, nil)
 	}
@@ -395,7 +395,7 @@ func (o *IrisAPI) Context() *middleware.Context {
 	return o.context
 }
 
-func (o *IrisAPI) initHandlerCache() {
+func (o *IrisdAPI) initHandlerCache() {
 	o.Context() // don't care about the result, just that the initialization happened
 	if o.handlers == nil {
 		o.handlers = make(map[string]map[string]http.Handler)
@@ -465,7 +465,7 @@ func (o *IrisAPI) initHandlerCache() {
 
 // Serve creates a http handler to serve the API over HTTP
 // can be used directly in http.ListenAndServe(":8000", api.Serve(nil))
-func (o *IrisAPI) Serve(builder middleware.Builder) http.Handler {
+func (o *IrisdAPI) Serve(builder middleware.Builder) http.Handler {
 	o.Init()
 
 	if o.Middleware != nil {
@@ -478,24 +478,24 @@ func (o *IrisAPI) Serve(builder middleware.Builder) http.Handler {
 }
 
 // Init allows you to just initialize the handler cache, you can then recompose the middleware as you see fit
-func (o *IrisAPI) Init() {
+func (o *IrisdAPI) Init() {
 	if len(o.handlers) == 0 {
 		o.initHandlerCache()
 	}
 }
 
 // RegisterConsumer allows you to add (or override) a consumer for a media type.
-func (o *IrisAPI) RegisterConsumer(mediaType string, consumer runtime.Consumer) {
+func (o *IrisdAPI) RegisterConsumer(mediaType string, consumer runtime.Consumer) {
 	o.customConsumers[mediaType] = consumer
 }
 
 // RegisterProducer allows you to add (or override) a producer for a media type.
-func (o *IrisAPI) RegisterProducer(mediaType string, producer runtime.Producer) {
+func (o *IrisdAPI) RegisterProducer(mediaType string, producer runtime.Producer) {
 	o.customProducers[mediaType] = producer
 }
 
 // AddMiddlewareFor adds a http middleware to existing handler
-func (o *IrisAPI) AddMiddlewareFor(method, path string, builder middleware.Builder) {
+func (o *IrisdAPI) AddMiddlewareFor(method, path string, builder middleware.Builder) {
 	um := strings.ToUpper(method)
 	if path == "/" {
 		path = ""
