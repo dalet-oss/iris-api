@@ -29,8 +29,16 @@ Q = $(if $(filter 1,$V),,@)
 M = $(shell printf "\033[34;1m▶\033[0m")
 
 .PHONY: all
-all: api ; @
+all: pre api post ; @
 	$Q echo "done"
+
+.PHONY: pre
+pre: ; $(info $(M) cleaning up auto-generated code from Git…) @
+	$Q git rm -rf --quiet $(DOCS_DIR) $(MODELS_DIR) $(API_CLI_DIR) $(API_CLIENT_DIR) $(API_SERVER_DIR) || true
+
+.PHONY: post
+post: ; $(info $(M) adding auto-generated code to Git…) @
+	$Q git add $(DOCS_DIR) $(MODELS_DIR) $(API_CLI_DIR) $(API_CLIENT_DIR) $(API_SERVER_DIR)
 
 .PHONY: bin
 bin: ; $(info $(M) create local bin directory) @
