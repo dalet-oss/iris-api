@@ -452,6 +452,470 @@ func init() {
         }
       }
     },
+    "/dns/server": {
+      "get": {
+        "description": "Returns the IDs of DNS servers.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "GetAllDNSServers",
+        "responses": {
+          "200": {
+            "description": "Returns the an array of DNS servers.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dns/server/{serverId}": {
+      "get": {
+        "description": "Returns the requested DNSServer object.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "GetDNSServer",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the DNS server to query.",
+            "name": "serverId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the DNSServer object.",
+            "schema": {
+              "$ref": "#/definitions/DNSServer"
+            }
+          },
+          "404": {
+            "description": "Invalid server ID was provided."
+          }
+        }
+      }
+    },
+    "/dns/zone": {
+      "get": {
+        "description": "Returns the IDs of DNS zones.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "GetAllDNSZones",
+        "responses": {
+          "200": {
+            "description": "Returns the an array of DNS zones.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new DNS (sub-)zone.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "CreateDNSZone",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Zone"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Returns the newly created zone object.",
+            "schema": {
+              "$ref": "#/definitions/Zone"
+            }
+          },
+          "400": {
+            "description": "Bad parameters were provided."
+          },
+          "409": {
+            "description": "Zone already exists."
+          },
+          "500": {
+            "description": "Unable to create zone."
+          }
+        }
+      }
+    },
+    "/dns/zone/{zoneId}": {
+      "get": {
+        "description": "Returns the requested DNS Zone object.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "GetDNSZone",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the DNS zone to query.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the DNS Zone object.",
+            "schema": {
+              "$ref": "#/definitions/Zone"
+            }
+          },
+          "404": {
+            "description": "Invalid zone ID was provided."
+          }
+        }
+      },
+      "put": {
+        "description": "Updates a DNS zone configuration.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "UpdateDNSZone",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the zone to update.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Zone"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the updated zone object.",
+            "schema": {
+              "$ref": "#/definitions/Zone"
+            }
+          },
+          "400": {
+            "description": "Bad parameters were provided."
+          },
+          "404": {
+            "description": "Invalid zone ID was provided."
+          },
+          "500": {
+            "description": "Unable to update zone."
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes an existing zone.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "DeleteDNSZone",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the zone to delete.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The zone has been successfully removed."
+          },
+          "404": {
+            "description": "Invalid zone ID was provided."
+          },
+          "409": {
+            "description": "The zone is not empty or still has associated records."
+          },
+          "500": {
+            "description": "Unable to remove the requested zone."
+          }
+        }
+      }
+    },
+    "/dns/zone/{zoneId}/record": {
+      "get": {
+        "description": "Returns the list of zone's record IDs.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "GetAllDNSZoneRecords",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the DNS zone to get records from.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the an array of zone's record IDs.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid zone ID was provided."
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new DNS zone's record.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "CreateDNSZoneRecord",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the DNS zone to create record on.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Record"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Returns the newly created zone's record object.",
+            "schema": {
+              "$ref": "#/definitions/Record"
+            }
+          },
+          "400": {
+            "description": "Bad parameters were provided."
+          },
+          "409": {
+            "description": "Zone's record already exists."
+          },
+          "500": {
+            "description": "Unable to create zone's record."
+          }
+        }
+      }
+    },
+    "/dns/zone/{zoneId}/record/{recordId}": {
+      "get": {
+        "description": "Returns the zone record object.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "GetDNSZoneRecord",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the DNS zone to query.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "The ID of the DNS record to query.",
+            "name": "recordId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the DNS Record object.",
+            "schema": {
+              "$ref": "#/definitions/Record"
+            }
+          },
+          "404": {
+            "description": "Invalid zone ID or record ID was provided."
+          }
+        }
+      },
+      "put": {
+        "description": "Updates a DNS zone record.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "UpdateDNSZoneRecord",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the zone's record to update.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "The ID of the DNS record to query.",
+            "name": "recordId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Record"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the updated Record object.",
+            "schema": {
+              "$ref": "#/definitions/Record"
+            }
+          },
+          "400": {
+            "description": "Bad parameters were provided."
+          },
+          "404": {
+            "description": "Invalid zone ID or record ID was provided."
+          },
+          "500": {
+            "description": "Unable to update zone's record."
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes an existing zone's record.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "DeleteDNSZoneRecord",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the zone's record to delete.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "The ID of the DNS record to delete.",
+            "name": "recordId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The record has been successfully removed."
+          },
+          "404": {
+            "description": "Invalid zone ID or record ID was provided."
+          },
+          "500": {
+            "description": "Unable to remove the requested record."
+          }
+        }
+      }
+    },
+    "/dns/zone/{zoneId}/record/{recordId}/disable": {
+      "post": {
+        "description": "Disable a given DNS Zone record.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "DisableDNSZoneRecord",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the zone's record to disable.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "The ID of the DNS record to disable.",
+            "name": "recordId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The DNS zone's record has been disabled."
+          },
+          "409": {
+            "description": "The DNS zone's record was already disable."
+          },
+          "500": {
+            "description": "Unable to disable the DNS zone's record."
+          }
+        }
+      }
+    },
+    "/dns/zone/{zoneId}/record/{recordId}/enable": {
+      "post": {
+        "description": "Enable a given DNS Zone record.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "EnableDNSZoneRecord",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the zone's record to enable.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "The ID of the DNS record to enable.",
+            "name": "recordId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The DNS zone's record has been enabled."
+          },
+          "409": {
+            "description": "The DNS zone's record was already enable."
+          },
+          "500": {
+            "description": "Unable to enable the DNS zone's record."
+          }
+        }
+      }
+    },
     "/healthz": {
       "get": {
         "produces": [
@@ -488,6 +952,60 @@ func init() {
           "description": "The version of the DHCPv4 service",
           "type": "string"
         }
+      }
+    },
+    "DNSServer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The server ID.",
+          "type": "string"
+        },
+        "type": {
+          "description": "The type of DNS server.",
+          "type": "string"
+        },
+        "version": {
+          "description": "The version of the DNS server.",
+          "type": "string"
+        }
+      }
+    },
+    "Record": {
+      "type": "object",
+      "required": [
+        "type",
+        "values"
+      ],
+      "properties": {
+        "id": {
+          "description": "The DNS record ID.",
+          "type": "string"
+        },
+        "ttl": {
+          "description": "The DNS record type.",
+          "type": "string"
+        },
+        "type": {
+          "description": "The DNS record type.",
+          "type": "string"
+        },
+        "values": {
+          "description": "The DNS record values.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "example": {
+        "id": "www.example.com",
+        "ttl": 3600,
+        "type": "A",
+        "values": [
+          "192.168.0.1",
+          "192.168.0.2"
+        ]
       }
     },
     "Reservation": {
@@ -550,6 +1068,22 @@ func init() {
       "example": {
         "first": "192.168.0.51",
         "last": "192.168.0.99"
+      }
+    },
+    "Zone": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "description": "The zone ID.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The zone name.",
+          "type": "string"
+        }
       }
     },
     "principal": {
@@ -1004,6 +1538,470 @@ func init() {
         }
       }
     },
+    "/dns/server": {
+      "get": {
+        "description": "Returns the IDs of DNS servers.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "GetAllDNSServers",
+        "responses": {
+          "200": {
+            "description": "Returns the an array of DNS servers.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dns/server/{serverId}": {
+      "get": {
+        "description": "Returns the requested DNSServer object.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "GetDNSServer",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the DNS server to query.",
+            "name": "serverId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the DNSServer object.",
+            "schema": {
+              "$ref": "#/definitions/DNSServer"
+            }
+          },
+          "404": {
+            "description": "Invalid server ID was provided."
+          }
+        }
+      }
+    },
+    "/dns/zone": {
+      "get": {
+        "description": "Returns the IDs of DNS zones.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "GetAllDNSZones",
+        "responses": {
+          "200": {
+            "description": "Returns the an array of DNS zones.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new DNS (sub-)zone.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "CreateDNSZone",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Zone"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Returns the newly created zone object.",
+            "schema": {
+              "$ref": "#/definitions/Zone"
+            }
+          },
+          "400": {
+            "description": "Bad parameters were provided."
+          },
+          "409": {
+            "description": "Zone already exists."
+          },
+          "500": {
+            "description": "Unable to create zone."
+          }
+        }
+      }
+    },
+    "/dns/zone/{zoneId}": {
+      "get": {
+        "description": "Returns the requested DNS Zone object.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "GetDNSZone",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the DNS zone to query.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the DNS Zone object.",
+            "schema": {
+              "$ref": "#/definitions/Zone"
+            }
+          },
+          "404": {
+            "description": "Invalid zone ID was provided."
+          }
+        }
+      },
+      "put": {
+        "description": "Updates a DNS zone configuration.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "UpdateDNSZone",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the zone to update.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Zone"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the updated zone object.",
+            "schema": {
+              "$ref": "#/definitions/Zone"
+            }
+          },
+          "400": {
+            "description": "Bad parameters were provided."
+          },
+          "404": {
+            "description": "Invalid zone ID was provided."
+          },
+          "500": {
+            "description": "Unable to update zone."
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes an existing zone.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "DeleteDNSZone",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the zone to delete.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The zone has been successfully removed."
+          },
+          "404": {
+            "description": "Invalid zone ID was provided."
+          },
+          "409": {
+            "description": "The zone is not empty or still has associated records."
+          },
+          "500": {
+            "description": "Unable to remove the requested zone."
+          }
+        }
+      }
+    },
+    "/dns/zone/{zoneId}/record": {
+      "get": {
+        "description": "Returns the list of zone's record IDs.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "GetAllDNSZoneRecords",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the DNS zone to get records from.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the an array of zone's record IDs.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid zone ID was provided."
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new DNS zone's record.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "CreateDNSZoneRecord",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the DNS zone to create record on.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Record"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Returns the newly created zone's record object.",
+            "schema": {
+              "$ref": "#/definitions/Record"
+            }
+          },
+          "400": {
+            "description": "Bad parameters were provided."
+          },
+          "409": {
+            "description": "Zone's record already exists."
+          },
+          "500": {
+            "description": "Unable to create zone's record."
+          }
+        }
+      }
+    },
+    "/dns/zone/{zoneId}/record/{recordId}": {
+      "get": {
+        "description": "Returns the zone record object.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "GetDNSZoneRecord",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the DNS zone to query.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "The ID of the DNS record to query.",
+            "name": "recordId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the DNS Record object.",
+            "schema": {
+              "$ref": "#/definitions/Record"
+            }
+          },
+          "404": {
+            "description": "Invalid zone ID or record ID was provided."
+          }
+        }
+      },
+      "put": {
+        "description": "Updates a DNS zone record.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "UpdateDNSZoneRecord",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the zone's record to update.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "The ID of the DNS record to query.",
+            "name": "recordId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Record"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the updated Record object.",
+            "schema": {
+              "$ref": "#/definitions/Record"
+            }
+          },
+          "400": {
+            "description": "Bad parameters were provided."
+          },
+          "404": {
+            "description": "Invalid zone ID or record ID was provided."
+          },
+          "500": {
+            "description": "Unable to update zone's record."
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes an existing zone's record.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "DeleteDNSZoneRecord",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the zone's record to delete.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "The ID of the DNS record to delete.",
+            "name": "recordId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The record has been successfully removed."
+          },
+          "404": {
+            "description": "Invalid zone ID or record ID was provided."
+          },
+          "500": {
+            "description": "Unable to remove the requested record."
+          }
+        }
+      }
+    },
+    "/dns/zone/{zoneId}/record/{recordId}/disable": {
+      "post": {
+        "description": "Disable a given DNS Zone record.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "DisableDNSZoneRecord",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the zone's record to disable.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "The ID of the DNS record to disable.",
+            "name": "recordId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The DNS zone's record has been disabled."
+          },
+          "409": {
+            "description": "The DNS zone's record was already disable."
+          },
+          "500": {
+            "description": "Unable to disable the DNS zone's record."
+          }
+        }
+      }
+    },
+    "/dns/zone/{zoneId}/record/{recordId}/enable": {
+      "post": {
+        "description": "Enable a given DNS Zone record.",
+        "tags": [
+          "dns"
+        ],
+        "operationId": "EnableDNSZoneRecord",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "The ID of the zone's record to enable.",
+            "name": "zoneId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "The ID of the DNS record to enable.",
+            "name": "recordId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The DNS zone's record has been enabled."
+          },
+          "409": {
+            "description": "The DNS zone's record was already enable."
+          },
+          "500": {
+            "description": "Unable to enable the DNS zone's record."
+          }
+        }
+      }
+    },
     "/healthz": {
       "get": {
         "produces": [
@@ -1040,6 +2038,60 @@ func init() {
           "description": "The version of the DHCPv4 service",
           "type": "string"
         }
+      }
+    },
+    "DNSServer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The server ID.",
+          "type": "string"
+        },
+        "type": {
+          "description": "The type of DNS server.",
+          "type": "string"
+        },
+        "version": {
+          "description": "The version of the DNS server.",
+          "type": "string"
+        }
+      }
+    },
+    "Record": {
+      "type": "object",
+      "required": [
+        "type",
+        "values"
+      ],
+      "properties": {
+        "id": {
+          "description": "The DNS record ID.",
+          "type": "string"
+        },
+        "ttl": {
+          "description": "The DNS record type.",
+          "type": "string"
+        },
+        "type": {
+          "description": "The DNS record type.",
+          "type": "string"
+        },
+        "values": {
+          "description": "The DNS record values.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "example": {
+        "id": "www.example.com",
+        "ttl": 3600,
+        "type": "A",
+        "values": [
+          "192.168.0.1",
+          "192.168.0.2"
+        ]
       }
     },
     "Reservation": {
@@ -1102,6 +2154,22 @@ func init() {
       "example": {
         "first": "192.168.0.51",
         "last": "192.168.0.99"
+      }
+    },
+    "Zone": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "description": "The zone ID.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The zone name.",
+          "type": "string"
+        }
       }
     },
     "principal": {

@@ -108,6 +108,12 @@ func MakeRootCmd() (*cobra.Command, error) {
 	}
 	rootCmd.AddCommand(operationGroupDhcpCmd)
 
+	operationGroupDNSCmd, err := makeOperationGroupDNSCmd()
+	if err != nil {
+		return nil, err
+	}
+	rootCmd.AddCommand(operationGroupDNSCmd)
+
 	operationGroupOperationsCmd, err := makeOperationGroupOperationsCmd()
 	if err != nil {
 		return nil, err
@@ -259,6 +265,98 @@ func makeOperationGroupDhcpCmd() (*cobra.Command, error) {
 	operationGroupDhcpCmd.AddCommand(operationUpdateDHCPSubnetReservationCmd)
 
 	return operationGroupDhcpCmd, nil
+}
+func makeOperationGroupDNSCmd() (*cobra.Command, error) {
+	operationGroupDNSCmd := &cobra.Command{
+		Use:  "dns",
+		Long: ``,
+	}
+
+	operationCreateDNSZoneCmd, err := makeOperationDNSCreateDNSZoneCmd()
+	if err != nil {
+		return nil, err
+	}
+	operationGroupDNSCmd.AddCommand(operationCreateDNSZoneCmd)
+
+	operationCreateDNSZoneRecordCmd, err := makeOperationDNSCreateDNSZoneRecordCmd()
+	if err != nil {
+		return nil, err
+	}
+	operationGroupDNSCmd.AddCommand(operationCreateDNSZoneRecordCmd)
+
+	operationDeleteDNSZoneCmd, err := makeOperationDNSDeleteDNSZoneCmd()
+	if err != nil {
+		return nil, err
+	}
+	operationGroupDNSCmd.AddCommand(operationDeleteDNSZoneCmd)
+
+	operationDeleteDNSZoneRecordCmd, err := makeOperationDNSDeleteDNSZoneRecordCmd()
+	if err != nil {
+		return nil, err
+	}
+	operationGroupDNSCmd.AddCommand(operationDeleteDNSZoneRecordCmd)
+
+	operationDisableDNSZoneRecordCmd, err := makeOperationDNSDisableDNSZoneRecordCmd()
+	if err != nil {
+		return nil, err
+	}
+	operationGroupDNSCmd.AddCommand(operationDisableDNSZoneRecordCmd)
+
+	operationEnableDNSZoneRecordCmd, err := makeOperationDNSEnableDNSZoneRecordCmd()
+	if err != nil {
+		return nil, err
+	}
+	operationGroupDNSCmd.AddCommand(operationEnableDNSZoneRecordCmd)
+
+	operationGetAllDNSServersCmd, err := makeOperationDNSGetAllDNSServersCmd()
+	if err != nil {
+		return nil, err
+	}
+	operationGroupDNSCmd.AddCommand(operationGetAllDNSServersCmd)
+
+	operationGetAllDNSZoneRecordsCmd, err := makeOperationDNSGetAllDNSZoneRecordsCmd()
+	if err != nil {
+		return nil, err
+	}
+	operationGroupDNSCmd.AddCommand(operationGetAllDNSZoneRecordsCmd)
+
+	operationGetAllDNSZonesCmd, err := makeOperationDNSGetAllDNSZonesCmd()
+	if err != nil {
+		return nil, err
+	}
+	operationGroupDNSCmd.AddCommand(operationGetAllDNSZonesCmd)
+
+	operationGetDNSServerCmd, err := makeOperationDNSGetDNSServerCmd()
+	if err != nil {
+		return nil, err
+	}
+	operationGroupDNSCmd.AddCommand(operationGetDNSServerCmd)
+
+	operationGetDNSZoneCmd, err := makeOperationDNSGetDNSZoneCmd()
+	if err != nil {
+		return nil, err
+	}
+	operationGroupDNSCmd.AddCommand(operationGetDNSZoneCmd)
+
+	operationGetDNSZoneRecordCmd, err := makeOperationDNSGetDNSZoneRecordCmd()
+	if err != nil {
+		return nil, err
+	}
+	operationGroupDNSCmd.AddCommand(operationGetDNSZoneRecordCmd)
+
+	operationUpdateDNSZoneCmd, err := makeOperationDNSUpdateDNSZoneCmd()
+	if err != nil {
+		return nil, err
+	}
+	operationGroupDNSCmd.AddCommand(operationUpdateDNSZoneCmd)
+
+	operationUpdateDNSZoneRecordCmd, err := makeOperationDNSUpdateDNSZoneRecordCmd()
+	if err != nil {
+		return nil, err
+	}
+	operationGroupDNSCmd.AddCommand(operationUpdateDNSZoneRecordCmd)
+
+	return operationGroupDNSCmd, nil
 }
 func makeOperationGroupOperationsCmd() (*cobra.Command, error) {
 	operationGroupOperationsCmd := &cobra.Command{

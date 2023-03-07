@@ -11,6 +11,7 @@ import (
 	"github.com/go-openapi/strfmt"
 
 	"github.com/dalet-oss/iris-api/client/dhcp"
+	"github.com/dalet-oss/iris-api/client/dns"
 	"github.com/dalet-oss/iris-api/client/operations"
 )
 
@@ -57,6 +58,7 @@ func New(transport runtime.ClientTransport, formats strfmt.Registry) *Iris {
 	cli := new(Iris)
 	cli.Transport = transport
 	cli.Dhcp = dhcp.New(transport, formats)
+	cli.DNS = dns.New(transport, formats)
 	cli.Operations = operations.New(transport, formats)
 	return cli
 }
@@ -104,6 +106,8 @@ func (cfg *TransportConfig) WithSchemes(schemes []string) *TransportConfig {
 type Iris struct {
 	Dhcp dhcp.ClientService
 
+	DNS dns.ClientService
+
 	Operations operations.ClientService
 
 	Transport runtime.ClientTransport
@@ -113,5 +117,6 @@ type Iris struct {
 func (c *Iris) SetTransport(transport runtime.ClientTransport) {
 	c.Transport = transport
 	c.Dhcp.SetTransport(transport)
+	c.DNS.SetTransport(transport)
 	c.Operations.SetTransport(transport)
 }

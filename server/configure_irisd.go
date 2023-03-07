@@ -12,6 +12,7 @@ import (
 
 	swaggerapi "github.com/dalet-oss/iris-api/server/api"
 	"github.com/dalet-oss/iris-api/server/api/dhcp"
+	"github.com/dalet-oss/iris-api/server/api/dns"
 )
 
 //go:generate swagger generate server --target ../../iris-api --name Irisd --spec ../swagger.generated.yml --api-package api --server-package server --principal interface{} --exclude-main
@@ -62,6 +63,16 @@ func configureAPI(api *swaggerapi.IrisdAPI) http.Handler {
 			return middleware.NotImplemented("operation dhcp.CreateDHCPSubnetReservation has not yet been implemented")
 		})
 	}
+	if api.DNSCreateDNSZoneHandler == nil {
+		api.DNSCreateDNSZoneHandler = dns.CreateDNSZoneHandlerFunc(func(params dns.CreateDNSZoneParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation dns.CreateDNSZone has not yet been implemented")
+		})
+	}
+	if api.DNSCreateDNSZoneRecordHandler == nil {
+		api.DNSCreateDNSZoneRecordHandler = dns.CreateDNSZoneRecordHandlerFunc(func(params dns.CreateDNSZoneRecordParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation dns.CreateDNSZoneRecord has not yet been implemented")
+		})
+	}
 	if api.DhcpDeleteDHCPSubnetHandler == nil {
 		api.DhcpDeleteDHCPSubnetHandler = dhcp.DeleteDHCPSubnetHandlerFunc(func(params dhcp.DeleteDHCPSubnetParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation dhcp.DeleteDHCPSubnet has not yet been implemented")
@@ -72,14 +83,34 @@ func configureAPI(api *swaggerapi.IrisdAPI) http.Handler {
 			return middleware.NotImplemented("operation dhcp.DeleteDHCPSubnetReservation has not yet been implemented")
 		})
 	}
+	if api.DNSDeleteDNSZoneHandler == nil {
+		api.DNSDeleteDNSZoneHandler = dns.DeleteDNSZoneHandlerFunc(func(params dns.DeleteDNSZoneParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation dns.DeleteDNSZone has not yet been implemented")
+		})
+	}
+	if api.DNSDeleteDNSZoneRecordHandler == nil {
+		api.DNSDeleteDNSZoneRecordHandler = dns.DeleteDNSZoneRecordHandlerFunc(func(params dns.DeleteDNSZoneRecordParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation dns.DeleteDNSZoneRecord has not yet been implemented")
+		})
+	}
 	if api.DhcpDisableDHCPHandler == nil {
 		api.DhcpDisableDHCPHandler = dhcp.DisableDHCPHandlerFunc(func(params dhcp.DisableDHCPParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation dhcp.DisableDHCP has not yet been implemented")
 		})
 	}
+	if api.DNSDisableDNSZoneRecordHandler == nil {
+		api.DNSDisableDNSZoneRecordHandler = dns.DisableDNSZoneRecordHandlerFunc(func(params dns.DisableDNSZoneRecordParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation dns.DisableDNSZoneRecord has not yet been implemented")
+		})
+	}
 	if api.DhcpEnableDHCPHandler == nil {
 		api.DhcpEnableDHCPHandler = dhcp.EnableDHCPHandlerFunc(func(params dhcp.EnableDHCPParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation dhcp.EnableDHCP has not yet been implemented")
+		})
+	}
+	if api.DNSEnableDNSZoneRecordHandler == nil {
+		api.DNSEnableDNSZoneRecordHandler = dns.EnableDNSZoneRecordHandlerFunc(func(params dns.EnableDNSZoneRecordParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation dns.EnableDNSZoneRecord has not yet been implemented")
 		})
 	}
 	if api.DhcpGetAllDHCPSubnetReservationsHandler == nil {
@@ -90,6 +121,21 @@ func configureAPI(api *swaggerapi.IrisdAPI) http.Handler {
 	if api.DhcpGetAllDHCPSubnetsHandler == nil {
 		api.DhcpGetAllDHCPSubnetsHandler = dhcp.GetAllDHCPSubnetsHandlerFunc(func(params dhcp.GetAllDHCPSubnetsParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation dhcp.GetAllDHCPSubnets has not yet been implemented")
+		})
+	}
+	if api.DNSGetAllDNSServersHandler == nil {
+		api.DNSGetAllDNSServersHandler = dns.GetAllDNSServersHandlerFunc(func(params dns.GetAllDNSServersParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation dns.GetAllDNSServers has not yet been implemented")
+		})
+	}
+	if api.DNSGetAllDNSZoneRecordsHandler == nil {
+		api.DNSGetAllDNSZoneRecordsHandler = dns.GetAllDNSZoneRecordsHandlerFunc(func(params dns.GetAllDNSZoneRecordsParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation dns.GetAllDNSZoneRecords has not yet been implemented")
+		})
+	}
+	if api.DNSGetAllDNSZonesHandler == nil {
+		api.DNSGetAllDNSZonesHandler = dns.GetAllDNSZonesHandlerFunc(func(params dns.GetAllDNSZonesParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation dns.GetAllDNSZones has not yet been implemented")
 		})
 	}
 	if api.DhcpGetDHCPStatusHandler == nil {
@@ -105,6 +151,21 @@ func configureAPI(api *swaggerapi.IrisdAPI) http.Handler {
 	if api.DhcpGetDHCPSubnetReservationHandler == nil {
 		api.DhcpGetDHCPSubnetReservationHandler = dhcp.GetDHCPSubnetReservationHandlerFunc(func(params dhcp.GetDHCPSubnetReservationParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation dhcp.GetDHCPSubnetReservation has not yet been implemented")
+		})
+	}
+	if api.DNSGetDNSServerHandler == nil {
+		api.DNSGetDNSServerHandler = dns.GetDNSServerHandlerFunc(func(params dns.GetDNSServerParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation dns.GetDNSServer has not yet been implemented")
+		})
+	}
+	if api.DNSGetDNSZoneHandler == nil {
+		api.DNSGetDNSZoneHandler = dns.GetDNSZoneHandlerFunc(func(params dns.GetDNSZoneParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation dns.GetDNSZone has not yet been implemented")
+		})
+	}
+	if api.DNSGetDNSZoneRecordHandler == nil {
+		api.DNSGetDNSZoneRecordHandler = dns.GetDNSZoneRecordHandlerFunc(func(params dns.GetDNSZoneRecordParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation dns.GetDNSZoneRecord has not yet been implemented")
 		})
 	}
 	if api.HealthzHandler == nil {
@@ -125,6 +186,16 @@ func configureAPI(api *swaggerapi.IrisdAPI) http.Handler {
 	if api.DhcpUpdateDHCPSubnetReservationHandler == nil {
 		api.DhcpUpdateDHCPSubnetReservationHandler = dhcp.UpdateDHCPSubnetReservationHandlerFunc(func(params dhcp.UpdateDHCPSubnetReservationParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation dhcp.UpdateDHCPSubnetReservation has not yet been implemented")
+		})
+	}
+	if api.DNSUpdateDNSZoneHandler == nil {
+		api.DNSUpdateDNSZoneHandler = dns.UpdateDNSZoneHandlerFunc(func(params dns.UpdateDNSZoneParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation dns.UpdateDNSZone has not yet been implemented")
+		})
+	}
+	if api.DNSUpdateDNSZoneRecordHandler == nil {
+		api.DNSUpdateDNSZoneRecordHandler = dns.UpdateDNSZoneRecordHandlerFunc(func(params dns.UpdateDNSZoneRecordParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation dns.UpdateDNSZoneRecord has not yet been implemented")
 		})
 	}
 
