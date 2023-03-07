@@ -31,7 +31,7 @@ func init() {
   "info": {
     "description": "Iris API Server",
     "title": "Iris",
-    "version": "0.0.1"
+    "version": "0.2.0"
   },
   "basePath": "/api/v1",
   "paths": {
@@ -1117,7 +1117,7 @@ func init() {
   "info": {
     "description": "Iris API Server",
     "title": "Iris",
-    "version": "0.0.1"
+    "version": "0.2.0"
   },
   "basePath": "/api/v1",
   "paths": {
