@@ -23,8 +23,8 @@ type Record struct {
 	// The DNS record ID.
 	ID string `json:"id,omitempty"`
 
-	// The DNS record type.
-	TTL string `json:"ttl,omitempty"`
+	// The DNS record time-to-live.
+	TTL int32 `json:"ttl,omitempty"`
 
 	// The DNS record type.
 	// Required: true

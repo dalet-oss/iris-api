@@ -67,6 +67,12 @@ type DeleteDNSZoneRecordParams struct {
 	*/
 	RecordID string
 
+	/* Type.
+
+	   The DNS record types to be removed.
+	*/
+	Type string
+
 	/* ZoneID.
 
 	   The ID of the zone's record to delete.
@@ -137,6 +143,17 @@ func (o *DeleteDNSZoneRecordParams) SetRecordID(recordID string) {
 	o.RecordID = recordID
 }
 
+// WithType adds the typeVar to the delete DNS zone record params
+func (o *DeleteDNSZoneRecordParams) WithType(typeVar string) *DeleteDNSZoneRecordParams {
+	o.SetType(typeVar)
+	return o
+}
+
+// SetType adds the type to the delete DNS zone record params
+func (o *DeleteDNSZoneRecordParams) SetType(typeVar string) {
+	o.Type = typeVar
+}
+
 // WithZoneID adds the zoneID to the delete DNS zone record params
 func (o *DeleteDNSZoneRecordParams) WithZoneID(zoneID string) *DeleteDNSZoneRecordParams {
 	o.SetZoneID(zoneID)
@@ -159,6 +176,16 @@ func (o *DeleteDNSZoneRecordParams) WriteToRequest(r runtime.ClientRequest, reg 
 	// path param recordId
 	if err := r.SetPathParam("recordId", o.RecordID); err != nil {
 		return err
+	}
+
+	// query param type
+	qrType := o.Type
+	qType := qrType
+	if qType != "" {
+
+		if err := r.SetQueryParam("type", qType); err != nil {
+			return err
+		}
 	}
 
 	// path param zoneId

@@ -31,7 +31,7 @@ func init() {
   "info": {
     "description": "Iris API Server",
     "title": "Iris",
-    "version": "0.2.0"
+    "version": "0.2.1"
   },
   "basePath": "/api/v1",
   "paths": {
@@ -829,6 +829,13 @@ func init() {
             "name": "recordId",
             "in": "path",
             "required": true
+          },
+          {
+            "type": "string",
+            "description": "The DNS record types to be removed.",
+            "name": "type",
+            "in": "query",
+            "required": true
           }
         ],
         "responses": {
@@ -983,8 +990,9 @@ func init() {
           "type": "string"
         },
         "ttl": {
-          "description": "The DNS record type.",
-          "type": "string"
+          "description": "The DNS record time-to-live.",
+          "type": "number",
+          "format": "int32"
         },
         "type": {
           "description": "The DNS record type.",
@@ -1117,7 +1125,7 @@ func init() {
   "info": {
     "description": "Iris API Server",
     "title": "Iris",
-    "version": "0.2.0"
+    "version": "0.2.1"
   },
   "basePath": "/api/v1",
   "paths": {
@@ -1915,6 +1923,13 @@ func init() {
             "name": "recordId",
             "in": "path",
             "required": true
+          },
+          {
+            "type": "string",
+            "description": "The DNS record types to be removed.",
+            "name": "type",
+            "in": "query",
+            "required": true
           }
         ],
         "responses": {
@@ -2069,8 +2084,9 @@ func init() {
           "type": "string"
         },
         "ttl": {
-          "description": "The DNS record type.",
-          "type": "string"
+          "description": "The DNS record time-to-live.",
+          "type": "number",
+          "format": "int32"
         },
         "type": {
           "description": "The DNS record type.",

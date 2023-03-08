@@ -39,6 +39,9 @@ func runOperationDNSDeleteDNSZoneRecord(cmd *cobra.Command, args []string) error
 	if err, _ := retrieveOperationDNSDeleteDNSZoneRecordRecordIDFlag(params, "", cmd); err != nil {
 		return err
 	}
+	if err, _ := retrieveOperationDNSDeleteDNSZoneRecordTypeFlag(params, "", cmd); err != nil {
+		return err
+	}
 	if err, _ := retrieveOperationDNSDeleteDNSZoneRecordZoneIDFlag(params, "", cmd); err != nil {
 		return err
 	}
@@ -64,6 +67,9 @@ func registerOperationDNSDeleteDNSZoneRecordParamFlags(cmd *cobra.Command) error
 	if err := registerOperationDNSDeleteDNSZoneRecordRecordIDParamFlags("", cmd); err != nil {
 		return err
 	}
+	if err := registerOperationDNSDeleteDNSZoneRecordTypeParamFlags("", cmd); err != nil {
+		return err
+	}
 	if err := registerOperationDNSDeleteDNSZoneRecordZoneIDParamFlags("", cmd); err != nil {
 		return err
 	}
@@ -84,6 +90,23 @@ func registerOperationDNSDeleteDNSZoneRecordRecordIDParamFlags(cmdPrefix string,
 	var recordIdFlagDefault string
 
 	_ = cmd.PersistentFlags().String(recordIdFlagName, recordIdFlagDefault, recordIdDescription)
+
+	return nil
+}
+func registerOperationDNSDeleteDNSZoneRecordTypeParamFlags(cmdPrefix string, cmd *cobra.Command) error {
+
+	typeDescription := `Required. The DNS record types to be removed.`
+
+	var typeFlagName string
+	if cmdPrefix == "" {
+		typeFlagName = "type"
+	} else {
+		typeFlagName = fmt.Sprintf("%v.type", cmdPrefix)
+	}
+
+	var typeFlagDefault string
+
+	_ = cmd.PersistentFlags().String(typeFlagName, typeFlagDefault, typeDescription)
 
 	return nil
 }
@@ -121,6 +144,26 @@ func retrieveOperationDNSDeleteDNSZoneRecordRecordIDFlag(m *dns.DeleteDNSZoneRec
 			return err, false
 		}
 		m.RecordID = recordIdFlagValue
+
+	}
+	return nil, retAdded
+}
+func retrieveOperationDNSDeleteDNSZoneRecordTypeFlag(m *dns.DeleteDNSZoneRecordParams, cmdPrefix string, cmd *cobra.Command) (error, bool) {
+	retAdded := false
+	if cmd.Flags().Changed("type") {
+
+		var typeFlagName string
+		if cmdPrefix == "" {
+			typeFlagName = "type"
+		} else {
+			typeFlagName = fmt.Sprintf("%v.type", cmdPrefix)
+		}
+
+		typeFlagValue, err := cmd.Flags().GetString(typeFlagName)
+		if err != nil {
+			return err, false
+		}
+		m.Type = typeFlagValue
 
 	}
 	return nil, retAdded

@@ -17,6 +17,8 @@ type DeleteDNSZoneRecordURL struct {
 	RecordID string
 	ZoneID   string
 
+	Type string
+
 	_basePath string
 	// avoid unkeyed usage
 	_ struct{}
@@ -62,6 +64,15 @@ func (o *DeleteDNSZoneRecordURL) Build() (*url.URL, error) {
 		_basePath = "/api/v1"
 	}
 	_result.Path = golangswaggerpaths.Join(_basePath, _path)
+
+	qs := make(url.Values)
+
+	typeVarQ := o.Type
+	if typeVarQ != "" {
+		qs.Set("type", typeVarQ)
+	}
+
+	_result.RawQuery = qs.Encode()
 
 	return &_result, nil
 }

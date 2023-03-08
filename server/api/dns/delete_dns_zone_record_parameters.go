@@ -9,8 +9,10 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/validate"
 )
 
 // NewDeleteDNSZoneRecordParams creates a new DeleteDNSZoneRecordParams object
@@ -35,6 +37,11 @@ type DeleteDNSZoneRecordParams struct {
 	  In: path
 	*/
 	RecordID string
+	/*The DNS record types to be removed.
+	  Required: true
+	  In: query
+	*/
+	Type string
 	/*The ID of the zone's record to delete.
 	  Required: true
 	  In: path
@@ -51,8 +58,15 @@ func (o *DeleteDNSZoneRecordParams) BindRequest(r *http.Request, route *middlewa
 
 	o.HTTPRequest = r
 
+	qs := runtime.Values(r.URL.Query())
+
 	rRecordID, rhkRecordID, _ := route.Params.GetOK("recordId")
 	if err := o.bindRecordID(rRecordID, rhkRecordID, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qType, qhkType, _ := qs.GetOK("type")
+	if err := o.bindType(qType, qhkType, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -76,6 +90,27 @@ func (o *DeleteDNSZoneRecordParams) bindRecordID(rawData []string, hasKey bool, 
 	// Required: true
 	// Parameter is provided by construction from the route
 	o.RecordID = raw
+
+	return nil
+}
+
+// bindType binds and validates parameter Type from query.
+func (o *DeleteDNSZoneRecordParams) bindType(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	if !hasKey {
+		return errors.Required("type", "query", rawData)
+	}
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+
+	// Required: true
+	// AllowEmptyValue: false
+
+	if err := validate.RequiredString("type", "query", raw); err != nil {
+		return err
+	}
+	o.Type = raw
 
 	return nil
 }

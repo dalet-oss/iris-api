@@ -33,8 +33,9 @@ definitions:
         description: The DNS record type.
         # enums: ["A", "AAAA", "ANAME", "CNAME", "SOA", "NS", "MX", "TXT", "SRV", "SPF", "PTR"]
       ttl:
-        type: string
-        description: The DNS record type.
+        type: number
+        format: int32
+        description: The DNS record time-to-live.
       values:
         type: array
         description: The DNS record values.
@@ -304,6 +305,11 @@ paths:
           type: string
           required: true
           description: The ID of the DNS record to delete.
+        - name: type
+          in: query
+          required: true
+          type: string
+          description: The DNS record types to be removed.
       responses:
         200:
           description: The record has been successfully removed.

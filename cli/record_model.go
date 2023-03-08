@@ -62,7 +62,7 @@ func registerRecordTTL(depth int, cmdPrefix string, cmd *cobra.Command) error {
 		return nil
 	}
 
-	ttlDescription := `The DNS record type.`
+	ttlDescription := `The DNS record time-to-live.`
 
 	var ttlFlagName string
 	if cmdPrefix == "" {
@@ -71,9 +71,9 @@ func registerRecordTTL(depth int, cmdPrefix string, cmd *cobra.Command) error {
 		ttlFlagName = fmt.Sprintf("%v.ttl", cmdPrefix)
 	}
 
-	var ttlFlagDefault string
+	var ttlFlagDefault int32
 
-	_ = cmd.PersistentFlags().String(ttlFlagName, ttlFlagDefault, ttlDescription)
+	_ = cmd.PersistentFlags().Int32(ttlFlagName, ttlFlagDefault, ttlDescription)
 
 	return nil
 }
@@ -184,7 +184,7 @@ func retrieveRecordTTLFlags(depth int, m *models.Record, cmdPrefix string, cmd *
 			ttlFlagName = fmt.Sprintf("%v.ttl", cmdPrefix)
 		}
 
-		ttlFlagValue, err := cmd.Flags().GetString(ttlFlagName)
+		ttlFlagValue, err := cmd.Flags().GetInt32(ttlFlagName)
 		if err != nil {
 			return err, false
 		}
