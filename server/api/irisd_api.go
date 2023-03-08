@@ -73,14 +73,8 @@ func NewIrisdAPI(spec *loads.Document) *IrisdAPI {
 		DhcpDisableDHCPHandler: dhcp.DisableDHCPHandlerFunc(func(params dhcp.DisableDHCPParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation dhcp.DisableDHCP has not yet been implemented")
 		}),
-		DNSDisableDNSZoneRecordHandler: dns.DisableDNSZoneRecordHandlerFunc(func(params dns.DisableDNSZoneRecordParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation dns.DisableDNSZoneRecord has not yet been implemented")
-		}),
 		DhcpEnableDHCPHandler: dhcp.EnableDHCPHandlerFunc(func(params dhcp.EnableDHCPParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation dhcp.EnableDHCP has not yet been implemented")
-		}),
-		DNSEnableDNSZoneRecordHandler: dns.EnableDNSZoneRecordHandlerFunc(func(params dns.EnableDNSZoneRecordParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation dns.EnableDNSZoneRecord has not yet been implemented")
 		}),
 		DhcpGetAllDHCPSubnetReservationsHandler: dhcp.GetAllDHCPSubnetReservationsHandlerFunc(func(params dhcp.GetAllDHCPSubnetReservationsParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation dhcp.GetAllDHCPSubnetReservations has not yet been implemented")
@@ -204,12 +198,8 @@ type IrisdAPI struct {
 	DNSDeleteDNSZoneRecordHandler dns.DeleteDNSZoneRecordHandler
 	// DhcpDisableDHCPHandler sets the operation handler for the disable d h c p operation
 	DhcpDisableDHCPHandler dhcp.DisableDHCPHandler
-	// DNSDisableDNSZoneRecordHandler sets the operation handler for the disable DNS zone record operation
-	DNSDisableDNSZoneRecordHandler dns.DisableDNSZoneRecordHandler
 	// DhcpEnableDHCPHandler sets the operation handler for the enable d h c p operation
 	DhcpEnableDHCPHandler dhcp.EnableDHCPHandler
-	// DNSEnableDNSZoneRecordHandler sets the operation handler for the enable DNS zone record operation
-	DNSEnableDNSZoneRecordHandler dns.EnableDNSZoneRecordHandler
 	// DhcpGetAllDHCPSubnetReservationsHandler sets the operation handler for the get all d h c p subnet reservations operation
 	DhcpGetAllDHCPSubnetReservationsHandler dhcp.GetAllDHCPSubnetReservationsHandler
 	// DhcpGetAllDHCPSubnetsHandler sets the operation handler for the get all d h c p subnets operation
@@ -355,14 +345,8 @@ func (o *IrisdAPI) Validate() error {
 	if o.DhcpDisableDHCPHandler == nil {
 		unregistered = append(unregistered, "dhcp.DisableDHCPHandler")
 	}
-	if o.DNSDisableDNSZoneRecordHandler == nil {
-		unregistered = append(unregistered, "dns.DisableDNSZoneRecordHandler")
-	}
 	if o.DhcpEnableDHCPHandler == nil {
 		unregistered = append(unregistered, "dhcp.EnableDHCPHandler")
-	}
-	if o.DNSEnableDNSZoneRecordHandler == nil {
-		unregistered = append(unregistered, "dns.EnableDNSZoneRecordHandler")
 	}
 	if o.DhcpGetAllDHCPSubnetReservationsHandler == nil {
 		unregistered = append(unregistered, "dhcp.GetAllDHCPSubnetReservationsHandler")
@@ -553,15 +537,7 @@ func (o *IrisdAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/dns/zone/{zoneId}/record/{recordId}/disable"] = dns.NewDisableDNSZoneRecord(o.context, o.DNSDisableDNSZoneRecordHandler)
-	if o.handlers["POST"] == nil {
-		o.handlers["POST"] = make(map[string]http.Handler)
-	}
 	o.handlers["POST"]["/dhcp/enable"] = dhcp.NewEnableDHCP(o.context, o.DhcpEnableDHCPHandler)
-	if o.handlers["POST"] == nil {
-		o.handlers["POST"] = make(map[string]http.Handler)
-	}
-	o.handlers["POST"]["/dns/zone/{zoneId}/record/{recordId}/enable"] = dns.NewEnableDNSZoneRecord(o.context, o.DNSEnableDNSZoneRecordHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

@@ -98,19 +98,9 @@ func configureAPI(api *swaggerapi.IrisdAPI) http.Handler {
 			return middleware.NotImplemented("operation dhcp.DisableDHCP has not yet been implemented")
 		})
 	}
-	if api.DNSDisableDNSZoneRecordHandler == nil {
-		api.DNSDisableDNSZoneRecordHandler = dns.DisableDNSZoneRecordHandlerFunc(func(params dns.DisableDNSZoneRecordParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation dns.DisableDNSZoneRecord has not yet been implemented")
-		})
-	}
 	if api.DhcpEnableDHCPHandler == nil {
 		api.DhcpEnableDHCPHandler = dhcp.EnableDHCPHandlerFunc(func(params dhcp.EnableDHCPParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation dhcp.EnableDHCP has not yet been implemented")
-		})
-	}
-	if api.DNSEnableDNSZoneRecordHandler == nil {
-		api.DNSEnableDNSZoneRecordHandler = dns.EnableDNSZoneRecordHandlerFunc(func(params dns.EnableDNSZoneRecordParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation dns.EnableDNSZoneRecord has not yet been implemented")
 		})
 	}
 	if api.DhcpGetAllDHCPSubnetReservationsHandler == nil {

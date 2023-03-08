@@ -31,7 +31,7 @@ func init() {
   "info": {
     "description": "Iris API Server",
     "title": "Iris",
-    "version": "0.2.2"
+    "version": "0.2.3"
   },
   "basePath": "/api/v1",
   "paths": {
@@ -847,78 +847,6 @@ func init() {
           },
           "500": {
             "description": "Unable to remove the requested record."
-          }
-        }
-      }
-    },
-    "/dns/zone/{zoneId}/record/{recordId}/disable": {
-      "post": {
-        "description": "Disable a given DNS Zone record.",
-        "tags": [
-          "dns"
-        ],
-        "operationId": "DisableDNSZoneRecord",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "The ID of the zone's record to disable.",
-            "name": "zoneId",
-            "in": "path",
-            "required": true
-          },
-          {
-            "type": "string",
-            "description": "The ID of the DNS record to disable.",
-            "name": "recordId",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "The DNS zone's record has been disabled."
-          },
-          "409": {
-            "description": "The DNS zone's record was already disable."
-          },
-          "500": {
-            "description": "Unable to disable the DNS zone's record."
-          }
-        }
-      }
-    },
-    "/dns/zone/{zoneId}/record/{recordId}/enable": {
-      "post": {
-        "description": "Enable a given DNS Zone record.",
-        "tags": [
-          "dns"
-        ],
-        "operationId": "EnableDNSZoneRecord",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "The ID of the zone's record to enable.",
-            "name": "zoneId",
-            "in": "path",
-            "required": true
-          },
-          {
-            "type": "string",
-            "description": "The ID of the DNS record to enable.",
-            "name": "recordId",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "The DNS zone's record has been enabled."
-          },
-          "409": {
-            "description": "The DNS zone's record was already enable."
-          },
-          "500": {
-            "description": "Unable to enable the DNS zone's record."
           }
         }
       }
@@ -1125,7 +1053,7 @@ func init() {
   "info": {
     "description": "Iris API Server",
     "title": "Iris",
-    "version": "0.2.2"
+    "version": "0.2.3"
   },
   "basePath": "/api/v1",
   "paths": {
@@ -1941,78 +1869,6 @@ func init() {
           },
           "500": {
             "description": "Unable to remove the requested record."
-          }
-        }
-      }
-    },
-    "/dns/zone/{zoneId}/record/{recordId}/disable": {
-      "post": {
-        "description": "Disable a given DNS Zone record.",
-        "tags": [
-          "dns"
-        ],
-        "operationId": "DisableDNSZoneRecord",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "The ID of the zone's record to disable.",
-            "name": "zoneId",
-            "in": "path",
-            "required": true
-          },
-          {
-            "type": "string",
-            "description": "The ID of the DNS record to disable.",
-            "name": "recordId",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "The DNS zone's record has been disabled."
-          },
-          "409": {
-            "description": "The DNS zone's record was already disable."
-          },
-          "500": {
-            "description": "Unable to disable the DNS zone's record."
-          }
-        }
-      }
-    },
-    "/dns/zone/{zoneId}/record/{recordId}/enable": {
-      "post": {
-        "description": "Enable a given DNS Zone record.",
-        "tags": [
-          "dns"
-        ],
-        "operationId": "EnableDNSZoneRecord",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "The ID of the zone's record to enable.",
-            "name": "zoneId",
-            "in": "path",
-            "required": true
-          },
-          {
-            "type": "string",
-            "description": "The ID of the DNS record to enable.",
-            "name": "recordId",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "The DNS zone's record has been enabled."
-          },
-          "409": {
-            "description": "The DNS zone's record was already enable."
-          },
-          "500": {
-            "description": "Unable to enable the DNS zone's record."
           }
         }
       }

@@ -3,7 +3,7 @@ consumes:
 info:
   description: Iris API Server
   title: Iris
-  version: 0.2.2
+  version: 0.2.3
 produces:
 - application/json
 schemes:

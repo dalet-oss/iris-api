@@ -38,10 +38,6 @@ type ClientService interface {
 
 	DeleteDNSZoneRecord(params *DeleteDNSZoneRecordParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteDNSZoneRecordOK, error)
 
-	DisableDNSZoneRecord(params *DisableDNSZoneRecordParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DisableDNSZoneRecordCreated, error)
-
-	EnableDNSZoneRecord(params *EnableDNSZoneRecordParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*EnableDNSZoneRecordCreated, error)
-
 	GetAllDNSServers(params *GetAllDNSServersParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetAllDNSServersOK, error)
 
 	GetAllDNSZoneRecords(params *GetAllDNSZoneRecordsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetAllDNSZoneRecordsOK, error)
@@ -214,84 +210,6 @@ func (a *Client) DeleteDNSZoneRecord(params *DeleteDNSZoneRecordParams, authInfo
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
 	msg := fmt.Sprintf("unexpected success response for DeleteDNSZoneRecord: API contract not enforced by server. Client expected to get an error, but got: %T", result)
-	panic(msg)
-}
-
-/*
-DisableDNSZoneRecord Disable a given DNS Zone record.
-*/
-func (a *Client) DisableDNSZoneRecord(params *DisableDNSZoneRecordParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DisableDNSZoneRecordCreated, error) {
-	// TODO: Validate the params before sending
-	if params == nil {
-		params = NewDisableDNSZoneRecordParams()
-	}
-	op := &runtime.ClientOperation{
-		ID:                 "DisableDNSZoneRecord",
-		Method:             "POST",
-		PathPattern:        "/dns/zone/{zoneId}/record/{recordId}/disable",
-		ProducesMediaTypes: []string{"application/json"},
-		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http"},
-		Params:             params,
-		Reader:             &DisableDNSZoneRecordReader{formats: a.formats},
-		AuthInfo:           authInfo,
-		Context:            params.Context,
-		Client:             params.HTTPClient,
-	}
-	for _, opt := range opts {
-		opt(op)
-	}
-
-	result, err := a.transport.Submit(op)
-	if err != nil {
-		return nil, err
-	}
-	success, ok := result.(*DisableDNSZoneRecordCreated)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for DisableDNSZoneRecord: API contract not enforced by server. Client expected to get an error, but got: %T", result)
-	panic(msg)
-}
-
-/*
-EnableDNSZoneRecord Enable a given DNS Zone record.
-*/
-func (a *Client) EnableDNSZoneRecord(params *EnableDNSZoneRecordParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*EnableDNSZoneRecordCreated, error) {
-	// TODO: Validate the params before sending
-	if params == nil {
-		params = NewEnableDNSZoneRecordParams()
-	}
-	op := &runtime.ClientOperation{
-		ID:                 "EnableDNSZoneRecord",
-		Method:             "POST",
-		PathPattern:        "/dns/zone/{zoneId}/record/{recordId}/enable",
-		ProducesMediaTypes: []string{"application/json"},
-		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http"},
-		Params:             params,
-		Reader:             &EnableDNSZoneRecordReader{formats: a.formats},
-		AuthInfo:           authInfo,
-		Context:            params.Context,
-		Client:             params.HTTPClient,
-	}
-	for _, opt := range opts {
-		opt(op)
-	}
-
-	result, err := a.transport.Submit(op)
-	if err != nil {
-		return nil, err
-	}
-	success, ok := result.(*EnableDNSZoneRecordCreated)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for EnableDNSZoneRecord: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 

@@ -296,18 +296,6 @@ func makeOperationGroupDNSCmd() (*cobra.Command, error) {
 	}
 	operationGroupDNSCmd.AddCommand(operationDeleteDNSZoneRecordCmd)
 
-	operationDisableDNSZoneRecordCmd, err := makeOperationDNSDisableDNSZoneRecordCmd()
-	if err != nil {
-		return nil, err
-	}
-	operationGroupDNSCmd.AddCommand(operationDisableDNSZoneRecordCmd)
-
-	operationEnableDNSZoneRecordCmd, err := makeOperationDNSEnableDNSZoneRecordCmd()
-	if err != nil {
-		return nil, err
-	}
-	operationGroupDNSCmd.AddCommand(operationEnableDNSZoneRecordCmd)
-
 	operationGetAllDNSServersCmd, err := makeOperationDNSGetAllDNSServersCmd()
 	if err != nil {
 		return nil, err
