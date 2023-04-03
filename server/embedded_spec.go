@@ -31,7 +31,7 @@ func init() {
   "info": {
     "description": "Iris API Server",
     "title": "Iris",
-    "version": "0.2.3"
+    "version": "0.2.4"
   },
   "basePath": "/api/v1",
   "paths": {
@@ -947,6 +947,10 @@ func init() {
     "Reservation": {
       "type": "object",
       "properties": {
+        "domain": {
+          "description": "The domain name",
+          "type": "string"
+        },
         "hostname": {
           "description": "The host name",
           "type": "string"
@@ -961,6 +965,7 @@ func init() {
         }
       },
       "example": {
+        "domain": "acme.com",
         "hostname": "my-awesome-server",
         "ip": "192.168.0.10",
         "mac": "1a:1b:1c:1d:1e:1f"
@@ -1053,7 +1058,7 @@ func init() {
   "info": {
     "description": "Iris API Server",
     "title": "Iris",
-    "version": "0.2.3"
+    "version": "0.2.4"
   },
   "basePath": "/api/v1",
   "paths": {
@@ -1969,6 +1974,10 @@ func init() {
     "Reservation": {
       "type": "object",
       "properties": {
+        "domain": {
+          "description": "The domain name",
+          "type": "string"
+        },
         "hostname": {
           "description": "The host name",
           "type": "string"
@@ -1983,6 +1992,7 @@ func init() {
         }
       },
       "example": {
+        "domain": "acme.com",
         "hostname": "my-awesome-server",
         "ip": "192.168.0.10",
         "mac": "1a:1b:1c:1d:1e:1f"

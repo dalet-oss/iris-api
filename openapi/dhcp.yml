@@ -47,10 +47,14 @@ definitions:
       hostname:
         type: string
         description: The host name
+      domain:
+        type: string
+        description: The domain name
     example:
       mac: '1a:1b:1c:1d:1e:1f'
       ip: '192.168.0.10'
       hostname: 'my-awesome-server'
+      domain: 'acme.com'
 
 paths:
   /dhcp:

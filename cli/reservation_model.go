@@ -17,6 +17,10 @@ import (
 // register flags to command
 func registerModelReservationFlags(depth int, cmdPrefix string, cmd *cobra.Command) error {
 
+	if err := registerReservationDomain(depth, cmdPrefix, cmd); err != nil {
+		return err
+	}
+
 	if err := registerReservationHostname(depth, cmdPrefix, cmd); err != nil {
 		return err
 	}
@@ -28,6 +32,27 @@ func registerModelReservationFlags(depth int, cmdPrefix string, cmd *cobra.Comma
 	if err := registerReservationMac(depth, cmdPrefix, cmd); err != nil {
 		return err
 	}
+
+	return nil
+}
+
+func registerReservationDomain(depth int, cmdPrefix string, cmd *cobra.Command) error {
+	if depth > maxDepth {
+		return nil
+	}
+
+	domainDescription := `The domain name`
+
+	var domainFlagName string
+	if cmdPrefix == "" {
+		domainFlagName = "domain"
+	} else {
+		domainFlagName = fmt.Sprintf("%v.domain", cmdPrefix)
+	}
+
+	var domainFlagDefault string
+
+	_ = cmd.PersistentFlags().String(domainFlagName, domainFlagDefault, domainDescription)
 
 	return nil
 }
@@ -99,6 +124,12 @@ func registerReservationMac(depth int, cmdPrefix string, cmd *cobra.Command) err
 func retrieveModelReservationFlags(depth int, m *models.Reservation, cmdPrefix string, cmd *cobra.Command) (error, bool) {
 	retAdded := false
 
+	err, domainAdded := retrieveReservationDomainFlags(depth, m, cmdPrefix, cmd)
+	if err != nil {
+		return err, false
+	}
+	retAdded = retAdded || domainAdded
+
 	err, hostnameAdded := retrieveReservationHostnameFlags(depth, m, cmdPrefix, cmd)
 	if err != nil {
 		return err, false
@@ -116,6 +147,34 @@ func retrieveModelReservationFlags(depth int, m *models.Reservation, cmdPrefix s
 		return err, false
 	}
 	retAdded = retAdded || macAdded
+
+	return nil, retAdded
+}
+
+func retrieveReservationDomainFlags(depth int, m *models.Reservation, cmdPrefix string, cmd *cobra.Command) (error, bool) {
+	if depth > maxDepth {
+		return nil, false
+	}
+	retAdded := false
+
+	domainFlagName := fmt.Sprintf("%v.domain", cmdPrefix)
+	if cmd.Flags().Changed(domainFlagName) {
+
+		var domainFlagName string
+		if cmdPrefix == "" {
+			domainFlagName = "domain"
+		} else {
+			domainFlagName = fmt.Sprintf("%v.domain", cmdPrefix)
+		}
+
+		domainFlagValue, err := cmd.Flags().GetString(domainFlagName)
+		if err != nil {
+			return err, false
+		}
+		m.Domain = domainFlagValue
+
+		retAdded = true
+	}
 
 	return nil, retAdded
 }

@@ -13,10 +13,13 @@ import (
 )
 
 // Reservation reservation
-// Example: {"hostname":"my-awesome-server","ip":"192.168.0.10","mac":"1a:1b:1c:1d:1e:1f"}
+// Example: {"domain":"acme.com","hostname":"my-awesome-server","ip":"192.168.0.10","mac":"1a:1b:1c:1d:1e:1f"}
 //
 // swagger:model Reservation
 type Reservation struct {
+
+	// The domain name
+	Domain string `json:"domain,omitempty"`
 
 	// The host name
 	Hostname string `json:"hostname,omitempty"`
